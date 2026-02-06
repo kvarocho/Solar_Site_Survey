@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Solar Site Survey - Indigenized Energy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #D2691E;
+            --primary-dark: #8B4513;
+            --primary-light: #DEB887;
+            --success: #2E7D32;
+            --warning: #F57C00;
+            --text-primary: #1A1A1A;
+            --text-secondary: #666666;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFE0B2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+        
+        /* Header */
+        .app-header {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .header-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+        
+        .header-title .subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 32px auto;
+            padding: 0 24px 40px;
+        }
+        
+        /* Progress */
+        .progress-container {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+        
+        .progress-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .progress-percent {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: #F5F5F5;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 12px;
+            transition: width 0.3s ease;
+        }
+        
+        /* Sections */
+        .section {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            overflow: hidden;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px;
+            cursor: pointer;
+            background: linear-gradient(to right, #FAFAFA 0%, #FFFFFF 100%);
+            border-bottom: 2px solid #E0E0E0;
+        }
+        
+        .section-header:hover {
+            background: #F5F5F5;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        .section-status {
+            background: var(--warning);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .section-status.complete {
+            background: var(--success);
+        }
+        
+        .section-content {
+            display: none;
+            padding: 32px 24px;
+        }
+        
+        .section-content.active {
+            display: block;
+        }
+        
+        /* Forms */
+        .form-group {
+            margin-bottom: 28px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+            font-size: 15px;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            background: white;
+        }
+        
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(210,105,30,0.1);
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        small {
+            display: block;
+            margin-top: 8px;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+        
+        /* Buttons */
+        .photo-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .photo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+        
+        /* Info Boxes */
+        .info-box {
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .info-box strong {
+            display: block;
+            color: var(--primary-dark);
+            font-size: 16px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .status-good { color: var(--success); font-weight: 600; }
+        .status-warning { color: var(--warning); font-weight: 600; }
+        .status-bad { color: #C62828; font-weight: 600; }
+        
+        /* Checkboxes */
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 12px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: #FAFAFA;
+            border-radius: 8px;
+        }
+        
+        .checkbox-item input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .checkbox-item label {
+            margin: 0;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        /* Photo Gallery */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+        
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .photo-delete {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(198,40,40,0.9);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        /* Export */
+        .export-container {
+            text-align: center;
+            margin-top: 40px;
+            padding: 32px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+        
+        .btn-export {
+            background: linear-gradient(135deg, var(--success) 0%, #1B5E20 100%);
+            color: white;
+            border: none;
+            padding: 18px 48px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .btn-export:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.16);
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px 32px;
+                margin: 16px auto;
+            }
+            
+            .header-content {
+                padding: 0 16px;
+            }
+            
+            .section-header,
+            .section-content {
+                padding: 20px 16px;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .photo-capture {
+            margin-top: 15px;
+        }
+        
+        .photo-btn {
+            background: #4682b4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .photo-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .photo-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .photo-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .photo-delete {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn:active {
+            transform: scale(0.95);
+        }
+        
+        .btn-primary {
+            background: #6b8e23;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #d2691e;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #c84630;
+            color: white;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e8dcc4;
+            border-radius: 15px;
+            overflow: visible;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6b8e23, #8fbc8f);
+            transition: width 0.3s;
+            border-radius: 15px;
+            min-width: 80px;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            font-weight: bold;
+            pointer-events: none;
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .checkbox-item label {
+            margin: 0;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <!-- Professional Header -->
+    <div class="app-header">
+        <div class="header-content">
+            <div class="logo-icon">☀️</div>
+            <div class="header-title">
+                <h1>Solar Site Survey</h1>
+                <span class="subtitle">Indigenized Energy</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Professional Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-label">
+                <span>Survey Progress</span>
+                <span class="progress-percent" id="progress-text">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+        
+        <!-- Site Information -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('site-info')">
+                <div class="section-title">📋 Site Information</div>
+                <div class="section-status" id="status-site-info">Incomplete</div>
+            </div>
+            <div class="section-content active" id="content-site-info">
+                <div class="form-group">
+                    <label>Customer Name *</label>
+                    <input type="text" id="customer-name" placeholder="Enter customer name">
+                </div>
+                <div class="form-group">
+                    <label>Site Address *</label>
+                    <input type="text" id="site-address" placeholder="Street address">
+                </div>
+                <div class="form-group">
+                    <label>GPS Coordinates</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="text" id="gps-coords" placeholder="Will be captured automatically" readonly style="flex: 1;">
+                        <button class="photo-btn" onclick="captureGPS()" style="margin: 0;">📍 Get Location</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>City, State, ZIP</label>
+                    <input type="text" id="city-state-zip" placeholder="City, State, ZIP">
+                </div>
+                <div class="form-group">
+                    <label>Survey Date *</label>
+                    <input type="text" id="survey-date" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Surveyor Name *</label>
+                    <input type="text" id="surveyor-name" placeholder="Your name">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Roof/Mounting Information -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('roof-info')">
+                <div class="section-title">🏠 Roof & Mounting</div>
+                <div class="section-status" id="status-roof-info">Incomplete</div>
+            </div>
+            <div class="section-content" id="content-roof-info">
+                
+                <!-- Installation Type Selection - FIRST -->
+                <div class="form-group">
+                    <label>Installation Type *</label>
+                    <div class="checkbox-group" style="display: block;">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="mount-roof" onchange="toggleMountSection('roof')">
+                            <label for="mount-roof">Roof Mount</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="mount-ground" onchange="toggleMountSection('ground')">
+                            <label for="mount-ground">Ground Mount</label>
+                        </div>
+                    </div>
+                    <small style="color: #666;">Check one or both if surveying multiple options</small>
+                </div>
+                
+                <!-- General Roof Info (only shown if roof mount selected) -->
+                <div id="roof-general-info" style="display: none;">
+                    <div class="form-group">
+                        <label>Roof Type *</label>
+                        <select id="roof-type">
+                            <option value="">Select roof type</option>
+                            <option value="asphalt-shingle">Asphalt Shingle</option>
+                            <option value="metal">Metal</option>
+                            <option value="tile">Tile</option>
+                            <option value="flat">Flat/Built-up</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Roof Condition Assessment (visible from ground/ladder)</label>
+                        <div class="checkbox-group" style="display: block;">
+                            <div style="margin: 10px 0;">
+                                <strong>Is the ridge line sagging or bowing?</strong><br>
+                                <label><input type="radio" name="roof-ridge" value="yes"> Yes</label>
+                                <label><input type="radio" name="roof-ridge" value="no"> No</label>
+                            </div>
+                            <div style="margin: 10px 0;">
+                                <strong>Are there missing or damaged shingles/tiles?</strong><br>
+                                <label><input type="radio" name="roof-shingles" value="yes"> Yes</label>
+                                <label><input type="radio" name="roof-shingles" value="no"> No</label>
+                            </div>
+                            <div style="margin: 10px 0;">
+                                <strong>Is there visible rot or water damage?</strong><br>
+                                <label><input type="radio" name="roof-damage" value="yes"> Yes</label>
+                                <label><input type="radio" name="roof-damage" value="no"> No</label>
+                            </div>
+                            <div style="margin: 10px 0;">
+                                <strong>Are the edges/eaves in good condition?</strong><br>
+                                <label><input type="radio" name="roof-eaves" value="yes"> Yes</label>
+                                <label><input type="radio" name="roof-eaves" value="no"> No</label>
+                            </div>
+                            <div style="margin: 10px 0;">
+                                <strong>Does the roof look older than 15 years?</strong><br>
+                                <label><input type="radio" name="roof-age-old" value="yes"> Yes</label>
+                                <label><input type="radio" name="roof-age-old" value="no"> No</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Roof Condition (Overall)</label>
+                        <select id="roof-condition">
+                            <option value="">Select condition</option>
+                            <option value="excellent">Excellent</option>
+                            <option value="good">Good</option>
+                            <option value="fair">Fair</option>
+                            <option value="poor">Poor - Needs Replacement</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Estimated Roof Age (years)</label>
+                        <input type="number" id="roof-age" placeholder="Years">
+                    </div>
+                </div>
+                
+                <!-- Roof Mount Section -->
+                <div id="roof-mount-section" style="display: none; border-left: 3px solid #D2691E; padding-left: 15px; margin-top: 15px;">
+                    <h3 style="color: #8B4513; margin-bottom: 15px;">Roof Mounting Planes</h3>
+                    
+                    <div class="form-group" style="background: #FFF8DC; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                        <strong>☀️ Solar Orientation Guide for Mid-USA</strong><br>
+                        <span style="color: #006400;">✓ BEST:</span> South-facing (ideal for maximum production)<br>
+                        <span style="color: #006400;">✓ GOOD:</span> Southwest or Southeast (90-95% of south production)<br>
+                        <span style="color: #DAA520;">⚠ OK:</span> East or West (75-80% of south production)<br>
+                        <span style="color: #DC143C;">✗ AVOID:</span> North-facing (poor production in Mid-USA)
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Number of Roof Mounting Planes *</label>
+                        <select id="num-roof-planes" onchange="generateRoofPlanes()">
+                            <option value="">Select number</option>
+                            <option value="1">1 Mounting Plane</option>
+                            <option value="2">2 Mounting Planes</option>
+                            <option value="3">3 Mounting Planes</option>
+                            <option value="4">4 Mounting Planes</option>
+                        </select>
+                    </div>
+                    
+                    <div id="roof-planes-container"></div>
+                    
+                    <div class="form-group">
+                        <label>Roof Mounting Plane Photos</label>
+                        <button class="photo-btn" onclick="capturePhoto('roof-mounting')">📷 Take Photo</button>
+                        <input type="file" id="roof-mounting-input" accept="image/*" capture="environment" onchange="handlePhotoUpload(event, 'roof-mounting')">
+                        <div class="photo-gallery" id="roof-mounting-gallery"></div>
+                    </div>
+                </div>
+                
+                <!-- Ground Mount Section -->
+                <div id="ground-mount-section" style="display: none; border-left: 3px solid #228B22; padding-left: 15px; margin-top: 15px;">
+                    <h3 style="color: #006400; margin-bottom: 15px;">Ground Mount Area</h3>
+                    
+                    <div class="form-group" style="background: #F0FFF0; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                        <strong>☀️ Ground Mount Best Practices</strong><br>
+                        <span style="color: #006400;">✓ BEST:</span> South-facing with no shading<br>
+                        <span style="color: #006400;">✓ IDEAL:</span> Flat or slight slope facing south<br>
+                        <span style="color: #DAA520;">⚠ CHECK:</span> Distance from panel (wire run costs)<br>
+                        <span style="color: #DAA520;">⚠ CHECK:</span> Soil conditions and drainage<br>
+                        <span style="color: #DC143C;">✗ AVOID:</span> Low-lying areas prone to flooding
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ground Mount Area Size</label>
+                        <input type="text" id="ground-size" placeholder="e.g., 40ft x 30ft or 1200 sq ft">
+                        <small style="color: #666;">Available area for ground-mounted array</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ground Mount Direction/Orientation</label>
+                        <select id="ground-direction">
+                            <option value="">Select direction</option>
+                            <option value="south">South (Best)</option>
+                            <option value="southwest">Southwest (Good)</option>
+                            <option value="southeast">Southeast (Good)</option>
+                            <option value="east">East (OK)</option>
+                            <option value="west">West (OK)</option>
+                            <option value="north">North (Avoid)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ground Slope/Grade</label>
+                        <select id="ground-slope">
+                            <option value="">Select slope</option>
+                            <option value="flat">Flat (level)</option>
+                            <option value="slight-south">Slight slope to South (ideal)</option>
+                            <option value="slight-other">Slight slope (other direction)</option>
+                            <option value="moderate">Moderate slope</option>
+                            <option value="steep">Steep slope</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Distance from Electrical Panel</label>
+                        <input type="number" id="ground-distance" placeholder="Feet">
+                        <small style="color: #666;">Wire run from ground array to main panel</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ground Conditions</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ground-shading">
+                                <label for="ground-shading">Trees/Shading present</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ground-flooding">
+                                <label for="ground-flooding">Potential flooding/water pooling</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ground-rocky">
+                                <label for="ground-rocky">Rocky soil</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ground-clear">
+                                <label for="ground-clear">Clear, flat, well-drained area</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ground Mount Area Photos</label>
+                        <button class="photo-btn" onclick="capturePhoto('ground-mount')">📷 Take Photo</button>
+                        <input type="file" id="ground-mount-input" accept="image/*" capture="environment" onchange="handlePhotoUpload(event, 'ground-mount')">
+                        <div class="photo-gallery" id="ground-mount-gallery"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ground Mount Notes</label>
+                        <textarea id="ground-notes" placeholder="Notes about ground mount area..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Roof Obstructions</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="obstruction-chimneys">
+                            <label for="obstruction-chimneys">Chimneys</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="obstruction-vents">
+                            <label for="obstruction-vents">Vents</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="obstruction-skylights">
+                            <label for="obstruction-skylights">Skylights</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="obstruction-trees">
+                            <label for="obstruction-trees">Trees/Shade</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="roof-notes" placeholder="Additional roof observations..."></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Electrical Service -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('electrical-info')">
+                <div class="section-title">⚡ Electrical Service</div>
+                <div class="section-status" id="status-electrical-info">Incomplete</div>
+            </div>
+            <div class="section-content" id="content-electrical-info">
+                <div class="form-group">
+                    <label>Main Service Panel Photos *</label>
+                    <button class="photo-btn" onclick="capturePhoto('main-panel')">📷 Take Photo</button>
+                    <input type="file" id="main-panel-input" accept="image/*" capture="environment" onchange="handlePhotoUpload(event, 'main-panel')">
+                    <div class="photo-gallery" id="main-panel-gallery"></div>
+                </div>
+                <div class="form-group">
+                    <label>Electrical Panel Cover/Label Photo</label>
+                    <button class="photo-btn" onclick="capturePhoto('panel-label')">📷 Take Photo of Panel Label</button>
+                    <input type="file" id="panel-label-input" accept="image/*" capture="environment" onchange="handlePhotoUpload(event, 'panel-label')">
+                    <div class="photo-gallery" id="panel-label-gallery"></div>
+                    <small style="color: #666;">Close-up photo of the panel label showing ratings</small>
+                </div>
+                <div class="form-group">
+                    <label>Service Panel Amperage (on Panel Label) *</label>
+                    <select id="panel-amperage">
+                        <option value="">Select amperage</option>
+                        <option value="100">100 Amp</option>
+                        <option value="125">125 Amp</option>
+                        <option value="150">150 Amp</option>
+                        <option value="200">200 Amp</option>
+                        <option value="400">400 Amp</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Main Breaker Size (on Main Breaker - Amps)</label>
+                    <input type="number" id="main-breaker" placeholder="Amps">
+                </div>
+                <div class="form-group">
+                    <label>Available Breaker Spaces</label>
+                    <input type="number" id="available-spaces" placeholder="Number of open spaces">
+                </div>
+                <div class="form-group">
+                    <label>Electrical Panel Safety Check</label>
+                    <div class="checkbox-group" style="display: block;">
+                        <div style="margin: 10px 0;">
+                            <strong>Is the panel rusty or corroded?</strong><br>
+                            <label><input type="radio" name="panel-rusty" value="yes"> Yes</label>
+                            <label><input type="radio" name="panel-rusty" value="no"> No</label>
+                        </div>
+                        <div style="margin: 10px 0;">
+                            <strong>Are any wires exposed or damaged?</strong><br>
+                            <label><input type="radio" name="panel-wires" value="yes"> Yes</label>
+                            <label><input type="radio" name="panel-wires" value="no"> No</label>
+                        </div>
+                        <div style="margin: 10px 0;">
+                            <strong>Is the panel door/cover damaged or missing?</strong><br>
+                            <label><input type="radio" name="panel-cover" value="yes"> Yes</label>
+                            <label><input type="radio" name="panel-cover" value="no"> No</label>
+                        </div>
+                        <div style="margin: 10px 0;">
+                            <strong>Are there scorch marks or signs of overheating?</strong><br>
+                            <label><input type="radio" name="panel-scorch" value="yes"> Yes</label>
+                            <label><input type="radio" name="panel-scorch" value="no"> No</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Grounding System Photos</label>
+                    <button class="photo-btn" onclick="capturePhoto('grounding')">📷 Take Photo</button>
+                    <input type="file" id="grounding-input" accept="image/*" capture="environment" onchange="handlePhotoUpload(event, 'grounding')">
+                    <div class="photo-gallery" id="grounding-gallery"></div>
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="electrical-notes" placeholder="Electrical observations, upgrades needed, etc..."></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Shading Analysis -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('shading-info')">
+                <div class="section-title">🌤️ Shading Analysis</div>
+                <div class="section-status" id="status-shading-info">Incomplete</div>
+            </div>
+            <div class="section-content" id="content-shading-info">
+                <div class="form-group">
+                    <label>Shading Photos (different angles) *</label>
+                    <button class="photo-btn" onclick="capturePhoto('shading')">📷 Take Photo</button>
+                    <input type="file" id="shading-input" accept="image/*" capture="environment" onchange="handlePhotoUpload(event, 'shading')">
+                    <div class="photo-gallery" id="shading-gallery"></div>
+                </div>
+                <div class="form-group">
+                    <label>Estimated Shading (%)</label>
+                    <select id="shading-percent">
+                        <option value="">Select shading level</option>
+                        <option value="0-10">0-10% (Excellent)</option>
+                        <option value="10-25">10-25% (Good)</option>
+                        <option value="25-50">25-50% (Fair)</option>
+                        <option value="50+">50%+ (Poor)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Shading Assessment</label>
+                    <div class="checkbox-group" style="display: block;">
+                        <div style="margin: 10px 0;">
+                            <strong>Are there trees within 20 feet of the roof?</strong><br>
+                            <label><input type="radio" name="shade-trees-near" value="yes"> Yes</label>
+                            <label><input type="radio" name="shade-trees-near" value="no"> No</label>
+                        </div>
+                        <div style="margin: 10px 0;">
+                            <strong>Do nearby buildings cast shadows on the roof?</strong><br>
+                            <label><input type="radio" name="shade-buildings-shadow" value="yes"> Yes</label>
+                            <label><input type="radio" name="shade-buildings-shadow" value="no"> No</label>
+                        </div>
+                        <div style="margin: 10px 0;">
+                            <strong>Do mountains/terrain block sun for part of the day?</strong><br>
+                            <label><input type="radio" name="shade-terrain" value="yes"> Yes</label>
+                            <label><input type="radio" name="shade-terrain" value="no"> No</label>
+                        </div>
+                        <div style="margin: 10px 0;">
+                            <strong>Is the roof in full sun most of the day?</strong><br>
+                            <label><input type="radio" name="shade-full-sun" value="yes"> Yes</label>
+                            <label><input type="radio" name="shade-full-sun" value="no"> No</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Shading Sources</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="shade-trees">
+                            <label for="shade-trees">Trees</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="shade-buildings">
+                            <label for="shade-buildings">Buildings</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="shade-mountains">
+                            <label for="shade-mountains">Mountains/Terrain</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="shade-none">
+                            <label for="shade-none">No Shading</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="shading-notes" placeholder="Shading observations..."></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <!-- System Recommendations -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('system-rec')">
+                <div class="section-title">⚡ System Recommendations</div>
+                <div class="section-status" id="status-system-rec">Optional</div>
+            </div>
+            <div class="section-content" id="content-system-rec">
+                <div class="form-group">
+                    <label>Recommended Solar System Size (kW)</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button class="photo-btn" onclick="calculateSystemSize()" style="margin: 0;">🔢 Auto-Calculate</button>
+                        <input type="number" step="0.5" id="system-size" placeholder="Enter or calculate system size (kW)" style="flex: 1;">
+                    </div>
+                    <small style="color: #666;">Based on panel size and typical usage</small>
+                </div>
+                <div class="form-group">
+                    <label>Battery Storage Recommended?</label>
+                    <select id="battery-included">
+                        <option value="">Select option</option>
+                        <option value="yes">Yes - Include Battery</option>
+                        <option value="no">No Battery</option>
+                    </select>
+                </div>
+                <div class="form-group" id="battery-size-group" style="display: none;">
+                    <label>Battery Size (kWh)</label>
+                    <select id="battery-size">
+                        <option value="">Select battery size</option>
+                        <option value="5">5 kWh</option>
+                        <option value="7">7 kWh</option>
+                        <option value="10">10 kWh (Standard)</option>
+                        <option value="13">13 kWh</option>
+                        <option value="15">15 kWh</option>
+                        <option value="20">20 kWh (Large)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Installation Notes</label>
+                    <textarea id="system-notes" placeholder="Any special considerations for installation, equipment recommendations, etc..."></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Additional Site Photos -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('additional-photos')">
+                <div class="section-title">📸 Additional Photos</div>
+                <div class="section-status" id="status-additional-photos">Optional</div>
+            </div>
+            <div class="section-content" id="content-additional-photos">
+                <div class="form-group">
+                    <label>Attic Access</label>
+                    <button class="photo-btn" onclick="capturePhoto('attic')">📷 Take Photo</button>
+                    <input type="file" id="attic-input" accept="image/*" capture="environment" onchange="handlePhotoUpload(event, 'attic')">
+                    <div class="photo-gallery" id="attic-gallery"></div>
+                </div>
+                <div class="form-group">
+                    <label>Meter Location</label>
+                    <button class="photo-btn" onclick="capturePhoto('meter')">📷 Take Photo</button>
+                    <input type="file" id="meter-input" accept="image/*" capture="environment" onchange="handlePhotoUpload(event, 'meter')">
+                    <div class="photo-gallery" id="meter-gallery"></div>
+                </div>
+                <div class="form-group">
+                    <label>Property Overview</label>
+                    <button class="photo-btn" onclick="capturePhoto('overview')">📷 Take Photo</button>
+                    <input type="file" id="overview-input" accept="image/*" capture="environment" onchange="handlePhotoUpload(event, 'overview')">
+                    <div class="photo-gallery" id="overview-gallery"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Final Notes -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('final-notes')">
+                <div class="section-title">📝 Survey Summary</div>
+                <div class="section-status" id="status-final-notes">Optional</div>
+            </div>
+            <div class="section-content" id="content-final-notes">
+                <div class="form-group">
+                    <label>Overall Site Assessment</label>
+                    <textarea id="overall-assessment" placeholder="Summary of findings, recommendations, concerns..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Recommended System Size (kW)</label>
+                    <input type="number" step="0.1" id="recommended-size" placeholder="kW">
+                </div>
+                <div class="form-group">
+                    <label>Special Considerations</label>
+                    <textarea id="special-considerations" placeholder="Any special requirements, challenges, or opportunities..."></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="generateReport()">📄 Generate Report</button>
+            <button class="btn btn-secondary" onclick="saveProgress()">💾 Save Progress</button>
+            <button class="btn btn-danger" onclick="clearSurvey()">🗑️ Clear Survey</button>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize survey date
+        document.getElementById('survey-date').value = new Date().toLocaleDateString();
+        
+        // GPS Capture
+        function captureGPS() {
+            if (navigator.geolocation) {
+                document.getElementById('gps-coords').value = 'Getting location...';
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude.toFixed(6);
+                        const lon = position.coords.longitude.toFixed(6);
+                        document.getElementById('gps-coords').value = `${lat}, ${lon}`;
+                        updateProgress();
+                    },
+                    function(error) {
+                        alert('Unable to get GPS location. Please enable location services.');
+                        document.getElementById('gps-coords').value = '';
+                    }
+                );
+            } else {
+                alert('GPS not supported on this device');
+            }
+        }
+        
+        // System Size Calculator
+        function calculateSystemSize() {
+            const panelAmps = parseInt(document.getElementById('panel-amperage').value) || 0;
+            
+            if (panelAmps === 0) {
+                alert('Please select Panel Amperage first to calculate system size');
+                return;
+            }
+            
+            // Simple calculation: Amp rating influences typical system size
+            let suggestedSize = 0;
+            if (panelAmps <= 100) {
+                suggestedSize = 3.5; // Small system
+            } else if (panelAmps <= 150) {
+                suggestedSize = 5.0; // Medium system
+            } else if (panelAmps <= 200) {
+                suggestedSize = 7.0; // Standard system
+            } else {
+                suggestedSize = 10.0; // Large system
+            }
+            
+            document.getElementById('system-size').value = suggestedSize;
+            alert(`Suggested system size: ${suggestedSize} kW\n\nBased on ${panelAmps}A panel. You can adjust this number if needed.`);
+            updateProgress();
+        }
+        
+        // Battery toggle
+        document.getElementById('battery-included').addEventListener('change', function() {
+            const batteryGroup = document.getElementById('battery-size-group');
+            if (this.value === 'yes') {
+                batteryGroup.style.display = 'block';
+            } else {
+                batteryGroup.style.display = 'none';
+                document.getElementById('battery-size').value = '';
+            }
+            updateProgress();
+        });
+        
+        // Mount type toggle
+        function toggleMountSection(type) {
+            const roofSection = document.getElementById('roof-mount-section');
+            const groundSection = document.getElementById('ground-mount-section');
+            const roofGeneralInfo = document.getElementById('roof-general-info');
+            const roofCheck = document.getElementById('mount-roof');
+            const groundCheck = document.getElementById('mount-ground');
+            
+            if (type === 'roof') {
+                roofSection.style.display = roofCheck.checked ? 'block' : 'none';
+                roofGeneralInfo.style.display = roofCheck.checked ? 'block' : 'none';
+            } else if (type === 'ground') {
+                groundSection.style.display = groundCheck.checked ? 'block' : 'none';
+            }
+            updateProgress();
+        }
+        
+        // Generate roof plane inputs
+        function generateRoofPlanes() {
+            const num = parseInt(document.getElementById('num-roof-planes').value);
+            const container = document.getElementById('roof-planes-container');
+            container.innerHTML = '';
+            
+            if (!num) return;
+            
+            for (let i = 1; i <= num; i++) {
+                const planeDiv = document.createElement('div');
+                planeDiv.style.cssText = 'background: #FFF8DC; padding: 15px; margin: 15px 0; border-radius: 5px; border: 2px solid #D2691E;';
+                planeDiv.innerHTML = `
+                    <h4 style="color: #8B4513; margin-bottom: 10px;">Mounting Plane ${i}</h4>
+                    
+                    <div class="form-group">
+                        <label>Direction/Orientation *</label>
+                        <select id="plane-${i}-direction" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            <option value="">Select direction</option>
+                            <option value="south">South (Best - 100%)</option>
+                            <option value="southwest">Southwest (Good - 90-95%)</option>
+                            <option value="southeast">Southeast (Good - 90-95%)</option>
+                            <option value="east">East (OK - 75-80%)</option>
+                            <option value="west">West (OK - 75-80%)</option>
+                            <option value="north">North (Avoid - Poor)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Approximate Size *</label>
+                        <input type="text" id="plane-${i}-size" placeholder="e.g., 25ft x 15ft or 375 sq ft" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        <small style="color: #666;">Length x Width or total square feet</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Pitch/Slope</label>
+                        <select id="plane-${i}-pitch" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            <option value="">Select pitch</option>
+                            <option value="flat">Flat (0-2/12)</option>
+                            <option value="low">Low (3-4/12)</option>
+                            <option value="medium">Medium (5-7/12)</option>
+                            <option value="steep">Steep (8-12/12)</option>
+                            <option value="very-steep">Very Steep (>12/12)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Notes for MP ${i}</label>
+                        <textarea id="plane-${i}-notes" placeholder="Obstructions, shading, concerns..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-height: 60px;"></textarea>
+                    </div>
+                `;
+                container.appendChild(planeDiv);
+            }
+            updateProgress();
+        }
+        
+        // Photo storage
+        const photos = {
+            'roof-mounting': [],
+            'ground-mount': [],
+            'main-panel': [],
+            'panel-label': [],
+            'grounding': [],
+            'shading': [],
+            'attic': [],
+            'meter': [],
+            'overview': []
+        };
+        
+        // Toggle section
+        function toggleSection(sectionId) {
+            const content = document.getElementById('content-' + sectionId);
+            content.classList.toggle('active');
+        }
+        
+        // Capture photo
+        function capturePhoto(type) {
+            document.getElementById(type + '-input').click();
+        }
+        
+        // Handle photo upload
+        function handlePhotoUpload(event, type) {
+            const files = event.target.files;
+            if (files.length === 0) return;
+            
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photos[type].push({
+                        data: e.target.result,
+                        name: file.name,
+                        timestamp: new Date().toISOString()
+                    });
+                    displayPhotos(type);
+                    updateProgress();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        // Display photos
+        function displayPhotos(type) {
+            const gallery = document.getElementById(type + '-gallery');
+            gallery.innerHTML = '';
+            
+            photos[type].forEach((photo, index) => {
+                const item = document.createElement('div');
+                item.className = 'photo-item';
+                item.innerHTML = `
+                    <img src="${photo.data}" alt="Photo ${index + 1}">
+                    <button class="photo-delete" onclick="deletePhoto('${type}', ${index})">×</button>
+                `;
+                gallery.appendChild(item);
+            });
+        }
+        
+        // Delete photo
+        function deletePhoto(type, index) {
+            photos[type].splice(index, 1);
+            displayPhotos(type);
+            updateProgress();
+        }
+        
+        // Update progress
+        function updateProgress() {
+            let completed = 0;
+            let total = 5; // Number of main sections
+            
+            // Check site info
+            if (document.getElementById('customer-name').value &&
+                document.getElementById('site-address').value &&
+                document.getElementById('surveyor-name').value) {
+                completed++;
+                document.getElementById('status-site-info').textContent = 'Complete';
+                document.getElementById('status-site-info').classList.add('complete');
+            } else {
+                document.getElementById('status-site-info').textContent = 'Incomplete';
+                document.getElementById('status-site-info').classList.remove('complete');
+            }
+            
+            // Check roof info
+            const roofChecked = document.getElementById('mount-roof').checked;
+            const groundChecked = document.getElementById('mount-ground').checked;
+            
+            if (document.getElementById('roof-type').value &&
+                (roofChecked || groundChecked)) {
+                completed++;
+                document.getElementById('status-roof-info').textContent = 'Complete';
+                document.getElementById('status-roof-info').classList.add('complete');
+            } else {
+                document.getElementById('status-roof-info').textContent = 'Incomplete';
+                document.getElementById('status-roof-info').classList.remove('complete');
+            }
+            
+            // Check electrical info
+            if (photos['main-panel'].length > 0 &&
+                document.getElementById('panel-amperage').value) {
+                completed++;
+                document.getElementById('status-electrical-info').textContent = 'Complete';
+                document.getElementById('status-electrical-info').classList.add('complete');
+            } else {
+                document.getElementById('status-electrical-info').textContent = 'Incomplete';
+                document.getElementById('status-electrical-info').classList.remove('complete');
+            }
+            
+            // Check shading info
+            if (photos['shading'].length > 0) {
+                completed++;
+                document.getElementById('status-shading-info').textContent = 'Complete';
+                document.getElementById('status-shading-info').classList.add('complete');
+            } else {
+                document.getElementById('status-shading-info').textContent = 'Incomplete';
+                document.getElementById('status-shading-info').classList.remove('complete');
+            }
+            
+            // Additional photos are optional
+            if (photos['attic'].length > 0 || photos['meter'].length > 0 || photos['overview'].length > 0) {
+                document.getElementById('status-additional-photos').textContent = 'Complete';
+                document.getElementById('status-additional-photos').classList.add('complete');
+            }
+            
+            // Final notes are optional
+            if (document.getElementById('overall-assessment').value) {
+                document.getElementById('status-final-notes').textContent = 'Complete';
+                document.getElementById('status-final-notes').classList.add('complete');
+            }
+            
+            const percent = Math.round((completed / total) * 100);
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+            progressFill.style.width = percent + '%';
+            progressText.textContent = percent + '%';
+        }
+        
+        // Add event listeners to all inputs
+        document.querySelectorAll('input, select, textarea').forEach(element => {
+            element.addEventListener('change', updateProgress);
+            element.addEventListener('input', updateProgress);
+        });
+        
+        // Generate report
+        function generateReport() {
+            const surveyData = {
+                siteInfo: {
+                    customerName: document.getElementById('customer-name').value,
+                    siteAddress: document.getElementById('site-address').value,
+                    cityStateZip: document.getElementById('city-state-zip').value,
+                    surveyDate: document.getElementById('survey-date').value,
+                    surveyorName: document.getElementById('surveyor-name').value
+                },
+                roofInfo: {
+                    roofType: document.getElementById('roof-type').value,
+                    roofCondition: document.getElementById('roof-condition').value,
+                    roofAge: document.getElementById('roof-age').value,
+                    obstructions: {
+                        chimneys: document.getElementById('obstruction-chimneys').checked,
+                        vents: document.getElementById('obstruction-vents').checked,
+                        skylights: document.getElementById('obstruction-skylights').checked,
+                        trees: document.getElementById('obstruction-trees').checked
+                    },
+                    notes: document.getElementById('roof-notes').value,
+                    photos: photos['mounting-plane'].length
+                },
+                electricalInfo: {
+                    panelAmperage: document.getElementById('panel-amperage').value,
+                    mainBreaker: document.getElementById('main-breaker').value,
+                    availableSpaces: document.getElementById('available-spaces').value,
+                    panelDistance: document.getElementById('panel-distance').value,
+                    notes: document.getElementById('electrical-notes').value,
+                    mainPanelPhotos: photos['main-panel'].length,
+                    groundingPhotos: photos['grounding'].length
+                },
+                shadingInfo: {
+                    shadingPercent: document.getElementById('shading-percent').value,
+                    sources: {
+                        trees: document.getElementById('shade-trees').checked,
+                        buildings: document.getElementById('shade-buildings').checked,
+                        mountains: document.getElementById('shade-mountains').checked,
+                        none: document.getElementById('shade-none').checked
+                    },
+                    notes: document.getElementById('shading-notes').value,
+                    photos: photos['shading'].length
+                },
+                summary: {
+                    overallAssessment: document.getElementById('overall-assessment').value,
+                    recommendedSize: document.getElementById('recommended-size').value,
+                    specialConsiderations: document.getElementById('special-considerations').value
+                },
+                photos: photos
+            };
+            
+            // Create downloadable JSON file
+            const dataStr = JSON.stringify(surveyData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `solar-survey-${surveyData.siteInfo.customerName.replace(/\s+/g, '-')}-${Date.now()}.json`;
+            link.click();
+            
+            alert('Survey report generated! Check your downloads folder.');
+        }
+        
+        // Save progress to localStorage
+        function saveProgress() {
+            const allData = {
+                inputs: {},
+                photos: photos
+            };
+            
+            // Save all input values
+            document.querySelectorAll('input, select, textarea').forEach(element => {
+                if (element.type === 'checkbox') {
+                    allData.inputs[element.id] = element.checked;
+                } else if (element.type !== 'file') {
+                    allData.inputs[element.id] = element.value;
+                }
+            });
+            
+            localStorage.setItem('solarSurvey', JSON.stringify(allData));
+            alert('Progress saved! Your data will be here when you return.');
+        }
+        
+        // Load progress from localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('solarSurvey');
+            if (saved) {
+                const data = JSON.parse(saved);
+                
+                // Restore inputs
+                Object.keys(data.inputs).forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        if (element.type === 'checkbox') {
+                            element.checked = data.inputs[id];
+                        } else if (element.type !== 'file') {
+                            element.value = data.inputs[id];
+                        }
+                    }
+                });
+                
+                // Restore photos
+                Object.keys(data.photos).forEach(type => {
+                    photos[type] = data.photos[type];
+                    displayPhotos(type);
+                });
+                
+                updateProgress();
+            }
+        }
+        
+        // Clear survey
+        function clearSurvey() {
+            if (confirm('Are you sure you want to clear all survey data? This cannot be undone.')) {
+                // Clear all inputs
+                document.querySelectorAll('input, select, textarea').forEach(element => {
+                    if (element.type === 'checkbox') {
+                        element.checked = false;
+                    } else if (element.type !== 'file') {
+                        element.value = '';
+                    }
+                });
+                
+                // Clear photos
+                Object.keys(photos).forEach(type => {
+                    photos[type] = [];
+                    displayPhotos(type);
+                });
+                
+                // Clear localStorage
+                localStorage.removeItem('solarSurvey');
+                
+                // Reset date
+                document.getElementById('survey-date').value = new Date().toLocaleDateString();
+                
+                updateProgress();
+                alert('Survey cleared!');
+            }
+        }
+        
+        // Load saved data on page load
+        window.addEventListener('load', loadProgress);
+    </script>
+</body>
+</html>
