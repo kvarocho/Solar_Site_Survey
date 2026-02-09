@@ -570,12 +570,8 @@
             </div>
             <div class="section-content active" id="content-site-info">
                 <div class="form-group">
-                    <label>Customer Name *</label>
-                    <input type="text" id="customer-name" placeholder="Enter customer name">
-                </div>
-                <div class="form-group">
-                    <label>Site Address *</label>
-                    <input type="text" id="site-address" placeholder="Street address">
+                    <label>Site Name *</label>
+                    <input type="text" id="site-name" placeholder="Enter site/project name">
                 </div>
                 <div class="form-group">
                     <label>GPS Coordinates</label>
@@ -583,6 +579,30 @@
                         <input type="text" id="gps-coords" placeholder="Will be captured automatically" readonly style="flex: 1;">
                         <button class="photo-btn" onclick="captureGPS()" style="margin: 0;">📍 Get Location</button>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label>Tribal Affiliation *</label>
+                    <select id="tribal-affiliation">
+                        <option value="">Select tribe</option>
+                        <option value="Yankton Sioux Tribe">Yankton Sioux Tribe</option>
+                        <option value="Turtle Mountain Band of Chippewa">Turtle Mountain Band of Chippewa</option>
+                        <option value="Spirit Lake Tribe">Spirit Lake Tribe</option>
+                        <option value="Rosebud Sioux Tribe">Rosebud Sioux Tribe</option>
+                        <option value="Oglala Sioux Tribe">Oglala Sioux Tribe</option>
+                        <option value="Northern Cheyenne Tribe">Northern Cheyenne Tribe</option>
+                        <option value="Northern Arapaho Tribe">Northern Arapaho Tribe</option>
+                        <option value="MHA Nation (Mandan, Hidatsa & Arikara)">MHA Nation (Mandan, Hidatsa & Arikara)</option>
+                        <option value="Menominee Indian Tribe of Wisconsin">Menominee Indian Tribe of Wisconsin</option>
+                        <option value="Sisseton Wahpeton Oyate (Lake Traverse)">Sisseton Wahpeton Oyate (Lake Traverse)</option>
+                        <option value="Flandreau Santee Sioux Tribe">Flandreau Santee Sioux Tribe</option>
+                        <option value="Chippewa Cree Tribe">Chippewa Cree Tribe</option>
+                        <option value="Blackfeet Nation">Blackfeet Nation</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Site Address *</label>
+                    <input type="text" id="site-address" placeholder="Street address">
                 </div>
                 <div class="form-group">
                     <label>City, State, ZIP</label>
@@ -678,7 +698,7 @@
                     </div>
                     <div class="form-group">
                         <label>Estimated Roof Age (years)</label>
-                        <input type="number" id="roof-age" placeholder="Years">
+                        <input type="number" id="roof-age" placeholder="Years" min="0">
                     </div>
                 </div>
                 
@@ -761,7 +781,7 @@
                     
                     <div class="form-group">
                         <label>Distance from Electrical Panel</label>
-                        <input type="number" id="ground-distance" placeholder="Feet">
+                        <input type="number" id="ground-distance" placeholder="Feet" min="0">
                         <small style="color: #666;">Wire run from ground array to main panel</small>
                     </div>
                     
@@ -862,11 +882,11 @@
                 </div>
                 <div class="form-group">
                     <label>Main Breaker Size (on Main Breaker - Amps)</label>
-                    <input type="number" id="main-breaker" placeholder="Amps">
+                    <input type="number" id="main-breaker" placeholder="Amps" min="0">
                 </div>
                 <div class="form-group">
                     <label>Available Breaker Spaces</label>
-                    <input type="number" id="available-spaces" placeholder="Number of open spaces">
+                    <input type="number" id="available-spaces" placeholder="Number of open spaces" min="0">
                 </div>
                 <div class="form-group">
                     <label>Electrical Panel Safety Check</label>
@@ -993,7 +1013,7 @@
                     <label>Recommended Solar System Size (kW)</label>
                     <div style="display: flex; gap: 10px; align-items: center;">
                         <button class="photo-btn" onclick="calculateSystemSize()" style="margin: 0;">🔢 Auto-Calculate</button>
-                        <input type="number" step="0.5" id="system-size" placeholder="Enter or calculate system size (kW)" style="flex: 1;">
+                        <input type="number" step="0.5" id="system-size" placeholder="Enter or calculate system size (kW)" style="flex: 1;" min="0">
                     </div>
                     <small style="color: #666;">Based on panel size and typical usage</small>
                 </div>
@@ -1065,7 +1085,7 @@
                 </div>
                 <div class="form-group">
                     <label>Recommended System Size (kW)</label>
-                    <input type="number" step="0.1" id="recommended-size" placeholder="kW">
+                    <input type="number" step="0.1" id="recommended-size" placeholder="kW" min="0">
                 </div>
                 <div class="form-group">
                     <label>Special Considerations</label>
@@ -1115,20 +1135,120 @@
                 return;
             }
             
-            // Simple calculation: Amp rating influences typical system size
-            let suggestedSize = 0;
+            // STEP 1: Base size from panel amperage
+            let baseSize = 0;
             if (panelAmps <= 100) {
-                suggestedSize = 3.5; // Small system
+                baseSize = 4.0;
             } else if (panelAmps <= 150) {
-                suggestedSize = 5.0; // Medium system
+                baseSize = 6.0;
             } else if (panelAmps <= 200) {
-                suggestedSize = 7.0; // Standard system
+                baseSize = 8.0;
             } else {
-                suggestedSize = 10.0; // Large system
+                baseSize = 12.0;
             }
             
+            // STEP 2: Calculate available space from mounting planes
+            let totalSpace = 0;
+            let spaceMultiplier = 1.0;
+            
+            // Check roof mounting planes
+            const numRoofPlanes = parseInt(document.getElementById('num-roof-planes')?.value) || 0;
+            if (numRoofPlanes > 0) {
+                for (let i = 1; i <= numRoofPlanes; i++) {
+                    const sizeInput = document.getElementById(`plane-${i}-size`)?.value || '';
+                    const direction = document.getElementById(`plane-${i}-direction`)?.value || '';
+                    
+                    // Parse size (handle "30ft x 20ft" or "600 sq ft")
+                    let sqft = 0;
+                    if (sizeInput.includes('x')) {
+                        const parts = sizeInput.toLowerCase().replace(/ft/g, '').split('x');
+                        if (parts.length === 2) {
+                            const width = parseFloat(parts[0].trim()) || 0;
+                            const length = parseFloat(parts[1].trim()) || 0;
+                            sqft = width * length;
+                        }
+                    } else {
+                        sqft = parseFloat(sizeInput.replace(/[^0-9.]/g, '')) || 0;
+                    }
+                    
+                    // Apply direction multiplier (south is best)
+                    let dirMultiplier = 1.0;
+                    if (direction === 'south') dirMultiplier = 1.0;
+                    else if (direction === 'southwest' || direction === 'southeast') dirMultiplier = 0.92;
+                    else if (direction === 'east' || direction === 'west') dirMultiplier = 0.78;
+                    else if (direction === 'north') dirMultiplier = 0.5;
+                    
+                    totalSpace += sqft * dirMultiplier;
+                }
+            }
+            
+            // Check ground mount
+            const groundSize = document.getElementById('ground-size')?.value || '';
+            if (groundSize) {
+                let groundSqft = 0;
+                if (groundSize.includes('x')) {
+                    const parts = groundSize.toLowerCase().replace(/ft/g, '').split('x');
+                    if (parts.length === 2) {
+                        const width = parseFloat(parts[0].trim()) || 0;
+                        const length = parseFloat(parts[1].trim()) || 0;
+                        groundSqft = width * length;
+                    }
+                } else {
+                    groundSqft = parseFloat(groundSize.replace(/[^0-9.]/g, '')) || 0;
+                }
+                
+                // Ground mount direction multiplier
+                const groundDir = document.getElementById('ground-direction')?.value || '';
+                let groundDirMult = 1.0;
+                if (groundDir === 'south') groundDirMult = 1.0;
+                else if (groundDir === 'southwest' || groundDir === 'southeast') groundDirMult = 0.92;
+                else if (groundDir === 'east' || groundDir === 'west') groundDirMult = 0.78;
+                else if (groundDir === 'north') groundDirMult = 0.5;
+                
+                totalSpace += groundSqft * groundDirMult;
+            }
+            
+            // Convert space to potential kW (rough: 100 sq ft per kW with modern panels)
+            const spaceBasedSize = totalSpace / 100;
+            
+            // STEP 3: Adjust for shading
+            const shading = document.getElementById('shading-percentage')?.value || '';
+            let shadingMultiplier = 1.0;
+            if (shading === '0-10') shadingMultiplier = 1.0;
+            else if (shading === '10-25') shadingMultiplier = 0.9;
+            else if (shading === '25-50') shadingMultiplier = 0.75;
+            else if (shading === '50+') shadingMultiplier = 0.6;
+            
+            // STEP 4: Calculate final size
+            // Use the smaller of electrical capacity or available space
+            let suggestedSize = Math.min(baseSize, spaceBasedSize);
+            
+            // Apply shading reduction
+            suggestedSize = suggestedSize * shadingMultiplier;
+            
+            // Round to nearest 0.5 kW
+            suggestedSize = Math.round(suggestedSize * 2) / 2;
+            
+            // Ensure minimum of 3 kW
+            suggestedSize = Math.max(3.0, suggestedSize);
+            
+            // Build detailed explanation
+            let explanation = `Suggested System Size: ${suggestedSize} kW\n\n`;
+            explanation += `CALCULATION BREAKDOWN:\n`;
+            explanation += `• Panel Capacity: ${panelAmps}A → ${baseSize} kW max\n`;
+            
+            if (totalSpace > 0) {
+                explanation += `• Available Space: ${Math.round(totalSpace)} sq ft → ${spaceBasedSize.toFixed(1)} kW potential\n`;
+            }
+            
+            if (shading && shading !== '0-10') {
+                explanation += `• Shading Impact: ${shading}% → ${(shadingMultiplier * 100).toFixed(0)}% efficiency\n`;
+            }
+            
+            explanation += `\nYou can adjust this number based on site needs.`;
+            
             document.getElementById('system-size').value = suggestedSize;
-            alert(`Suggested system size: ${suggestedSize} kW\n\nBased on ${panelAmps}A panel. You can adjust this number if needed.`);
+            alert(explanation);
             updateProgress();
         }
         
@@ -1289,7 +1409,8 @@
             let total = 5; // Number of main sections
             
             // Check site info
-            if (document.getElementById('customer-name').value &&
+            if (document.getElementById('site-name').value &&
+                document.getElementById('tribal-affiliation').value &&
                 document.getElementById('site-address').value &&
                 document.getElementById('surveyor-name').value) {
                 completed++;
@@ -1364,9 +1485,11 @@
         function generateReport() {
             const surveyData = {
                 siteInfo: {
-                    customerName: document.getElementById('customer-name').value,
+                    siteName: document.getElementById('site-name').value,
+                    tribalAffiliation: document.getElementById('tribal-affiliation').value,
                     siteAddress: document.getElementById('site-address').value,
                     cityStateZip: document.getElementById('city-state-zip').value,
+                    gpsCoords: document.getElementById('gps-coords').value,
                     surveyDate: document.getElementById('survey-date').value,
                     surveyorName: document.getElementById('surveyor-name').value
                 },
@@ -1417,7 +1540,7 @@
             const url = URL.createObjectURL(dataBlob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = `solar-survey-${surveyData.siteInfo.customerName.replace(/\s+/g, '-')}-${Date.now()}.json`;
+            link.download = `solar-survey-${surveyData.siteInfo.siteName.replace(/\s+/g, '-')}-${Date.now()}.json`;
             link.click();
             
             alert('Survey report generated! Check your downloads folder.');
