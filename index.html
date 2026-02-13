@@ -1085,14 +1085,8 @@ let safetyAcknowledged = false;
 let safetyAcknowledgedTimestamp = null;
 
 function checkSafetyAcknowledgement() {
-  const stored = localStorage.getItem('safetyAcknowledged');
-  if (stored) {
-    const data = JSON.parse(stored);
-    safetyAcknowledged = true;
-    safetyAcknowledgedTimestamp = data.timestamp;
-    document.getElementById('safetyModal').classList.add('hidden');
-    document.getElementById('safetyBar').classList.add('visible');
-  }
+  // Don't check localStorage - always show the disclaimer
+  // Modal stays visible on every page load
 }
 
 document.getElementById('safetyAgree').addEventListener('change', function() {
@@ -1103,10 +1097,7 @@ document.getElementById('safetyProceed').addEventListener('click', function() {
   safetyAcknowledgedTimestamp = new Date().toISOString();
   safetyAcknowledged = true;
   
-  localStorage.setItem('safetyAcknowledged', JSON.stringify({
-    acknowledged: true,
-    timestamp: safetyAcknowledgedTimestamp
-  }));
+  // Don't save to localStorage - they'll need to agree every time
   
   document.getElementById('safetyModal').classList.add('hidden');
   document.getElementById('safetyBar').classList.add('visible');
